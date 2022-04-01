@@ -2,18 +2,15 @@ package feed
 
 import (
 	"errors"
-	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
-	"path/filepath"
 	"sort"
 	"time"
 
 	"github.com/hi-bridge-9/news-feed/target"
+	"github.com/mmcdole/gofeed"
 )
 
-func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]Output, error) {
+func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]News, error) {
 	// 取得対象の開始時刻が入力にない場合、エラーを返却
 	if start == nil {
 		return nil, errors.New("start of range is not exist")
@@ -25,33 +22,27 @@ func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]Output, error) {
 		end = &now
 	}
 
-	var outList *[]Output
+	var newsList *[]News
 	for _, url := range *urls {
 		for _, site := range url.Sites {
-			out, err := findUpdate(site, start, end)
+			news, err := checkUpdate(site, start, end)
 			if err != nil {
 				return nil, err
 			}
-			if out != nil {
-				*outList = append(*outList, *out)
+			if news != nil {
+				*newsList = append(*newsList, *news)
 			}
 		}
 	}
 
-	return outList, nil
+	return newsList, nil
 }
 
-func findUpdate(site target.Site, start, end *time.Time) (*Output, error) {
+func checkUpdate(site target.Site, start, end *time.Time) (*News, error) {
 	// URL先からフィード用コンテンツを取得
-	bytes, err := fetch(site.FeedURL)
+	feed, err := gofeed.NewParser().ParseURL(site.FeedURL)
 	if err != nil {
-		return nil, fmt.Errorf("error in fetch feed contents: %w", err)
-	}
-
-	// コンテンツをパース
-	feed, err := parse(bytes, filepath.Ext(site.FeedURL))
-	if err != nil {
-		return nil, fmt.Errorf("error in parse feed contents: %w", err)
+		return nil, err
 	}
 
 	// 新しい情報のみを抽出
@@ -59,37 +50,7 @@ func findUpdate(site target.Site, start, end *time.Time) (*Output, error) {
 	return extract(feed, start, end), nil
 }
 
-func fetch(url string) ([]byte, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	// リクエストボディを読み取り、返却
-	return ioutil.ReadAll(resp.Body)
-}
-
-func parse(data []byte, ext string) (*Feed, error) {
-	var feed *Feed
-	var err error
-
-	// フィードの形式がatomの時は専用のパースを実施
-	switch ext {
-	case ".atom":
-		feed, err = atom.Parse(data)
-	default:
-		feed, err = rss.Parse(data)
-	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return feed, nil
-}
-
-func extract(f *Feed, start, end *time.Time) *Output {
+func extract(f *gofeed.Feed, start, end *time.Time) *News {
 	// フィード用ファイルの更新がされていなければ、記事の確認処理を行わない
 	if f.UpdatedParsed.Unix() < start.Unix() || f.UpdatedParsed.Unix() < end.Unix() {
 		log.Println("feed file is not updated")
@@ -101,29 +62,30 @@ func extract(f *Feed, start, end *time.Time) *Output {
 	sort.Sort(items)
 
 	// 投稿日が取得対象の範囲内なら抽出
-	var out *Output
+	var news *News
 	for _, article := range f.Items {
 		if article.PublishedParsed.Unix() >= start.Unix() {
 			if article.PublishedParsed.Unix() < end.Unix() {
-				out.Articles = append(out.Articles, article)
+				news.Articles = append(news.Articles, *article)
 			}
 		} else {
-			// 取得開始時刻よりも記事が古い場合、抽出を終了（新しい順にソートしているため、これ以降抽出することはない）
+			// 取得開始時刻よりも記事が古い場合、抽出処理を終了
 			break
 		}
 	}
 
-	if len(out.Articles) == 0 {
+	if len(news.Articles) == 0 {
 		log.Println("article is not updated")
 		return nil
 	}
 
 	// 記事が抽出されている場合のみ、サイト名やURLを取得する
-	out.SiteTitle = f.Title
-	out.SiteURL = f.Link
+	news.SiteTitle = f.Title
+	news.SiteURL = f.Link
 
-	return out
+	return news
 }
+
 
 func (p ByPublishedParsed) Len() int {
 	return len(p)
