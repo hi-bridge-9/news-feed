@@ -18,7 +18,6 @@ type Feed struct {
 	Version    string      `xml:"version"`
 }
 
-// Entry is an Atom Entry
 type Entry struct {
 	Title   string `xml:"title,omitempty"`
 	ID      string `xml:"id,omitempty"`

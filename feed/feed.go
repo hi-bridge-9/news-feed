@@ -13,7 +13,7 @@ import (
 	"github.com/hi-bridge-9/news-feed/target"
 )
 
-func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]Feed, error) {
+func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]Output, error) {
 	// 取得対象の開始時刻が入力にない場合、エラーを返却
 	if start == nil {
 		return nil, errors.New("start of range is not exist")
@@ -21,14 +21,14 @@ func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]Feed, error) {
 
 	// 終了時刻が入力にない場合、現在時刻を終了時刻とみなす
 	if end == nil {
-		now := time.Now()
+		now := time.Now().UTC()
 		end = &now
 	}
 
 	var outList *[]Output
 	for _, url := range *urls {
 		for _, site := range url.Sites {
-			out, err := findUpdatedInfo(site, start, end)
+			out, err := findUpdate(site, start, end)
 			if err != nil {
 				return nil, err
 			}
@@ -38,10 +38,10 @@ func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]Feed, error) {
 		}
 	}
 
-	return nil, nil
+	return outList, nil
 }
 
-func findUpdatedInfo(site target.Site, start, end *time.Time) (*Output, error) {
+func findUpdate(site target.Site, start, end *time.Time) (*Output, error) {
 	// URL先からフィード用コンテンツを取得
 	bytes, err := fetch(site.FeedURL)
 	if err != nil {
