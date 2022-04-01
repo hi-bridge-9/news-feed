@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	path := flag.String("path", "./feed_list.json", "for read feed target list")
+	path := flag.String("path", ".example_data/feed_list.json", "for read feed target list")
 	bytes, err := ioutil.ReadFile(*path)
 	if err != nil {
 		panic(err)
