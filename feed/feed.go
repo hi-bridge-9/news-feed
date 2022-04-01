@@ -6,11 +6,10 @@ import (
 	"sort"
 	"time"
 
-	"github.com/hi-bridge-9/news-feed/target"
 	"github.com/mmcdole/gofeed"
 )
 
-func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]News, error) {
+func GetNewInfo(urls *[]Tartget, start, end *time.Time) (*[]News, error) {
 	// 取得対象の開始時刻が入力にない場合、エラーを返却
 	if start == nil {
 		return nil, errors.New("start of range is not exist")
@@ -25,7 +24,7 @@ func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]News, error) {
 	var newsList *[]News
 	for _, url := range *urls {
 		for _, site := range url.Sites {
-			news, err := checkUpdate(site, start, end)
+			news, err := checkUpdate(&site, start, end)
 			if err != nil {
 				return nil, err
 			}
@@ -38,7 +37,7 @@ func GetNewInfo(urls *[]target.Info, start, end *time.Time) (*[]News, error) {
 	return newsList, nil
 }
 
-func checkUpdate(site target.Site, start, end *time.Time) (*News, error) {
+func checkUpdate(site *Site, start, end *time.Time) (*News, error) {
 	// URL先からフィード用コンテンツを取得
 	feed, err := gofeed.NewParser().ParseURL(site.FeedURL)
 	if err != nil {
@@ -85,7 +84,6 @@ func extract(f *gofeed.Feed, start, end *time.Time) *News {
 
 	return news
 }
-
 
 func (p ByPublishedParsed) Len() int {
 	return len(p)

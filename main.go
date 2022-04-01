@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/hi-bridge-9/news-feed/feed"
-	"github.com/hi-bridge-9/news-feed/target"
 )
 
 func main() {
@@ -20,8 +19,8 @@ func main() {
 	}
 
 	// ファイルの内容を読み取り、構造体にマッピング
-	var InfoList []target.Info
-	if err := json.Unmarshal(bytes, &InfoList); err != nil {
+	var targetList []feed.Tartget
+	if err := json.Unmarshal(bytes, &targetList); err != nil {
 		panic(err)
 	}
 
@@ -31,7 +30,7 @@ func main() {
 	end := time.Date(now.Year(), now.Month(), now.Day(), 00, 00, 00, 00, time.UTC)
 
 	// 情報取得対象の情報、取得対象範囲をもとに、新しい情報を取得
-	newsList, err := feed.GetNewInfo(&InfoList, &start, &end)
+	newsList, err := feed.GetNewInfo(&targetList, &start, &end)
 	if err != nil {
 		panic(err)
 	}
