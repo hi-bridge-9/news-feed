@@ -1,0 +1,172 @@
+[
+    {
+        "category": "Privacy Sandbox",
+        "sites": [
+            {
+                "name": "Google Developers Japan",
+                "top_url": "https://developers-jp.googleblog.com/",
+                "feed_url": "https://developers-jp.googleblog.com/atom.xml"
+            },
+            {
+                "name": "Chrome Developers",
+                "top_url": "https://developer.chrome.com/",
+                "feed_url": "https://developer.chrome.com/feeds/blog.xml"
+            },
+            {
+                "name": "web.dev",
+                "top_url": "https://web.dev/",
+                "feed_url": "https://web.dev/feed.xml"
+            },
+            {
+                "name": "Chromium Blog",
+                "top_url": "https://blog.chromium.org",
+                "feed_url": "https://blog.chromium.org/atom.xml"
+            },
+            {
+                "name": "GitHub WICG/Conversion_Measurement_API/aggregated_reporting",
+                "site-url": "https://github.com/WICG/conversion-measurement-api/blob/main/AGGREGATE.md",
+                "feed-url": "https://github.com/WICG/conversion-measurement-api/commits/main/AGGREGATE.md.atom"
+            },
+            {
+                "name": "GitHub WICG/Conversion_Measurement_API/aggregated_reporting_flow",
+                "site-url": "https://github.com/WICG/conversion-measurement-api/blob/main/AGGREGATION_SERVICE_TEE.md",
+                "feed-url": "https://github.com/WICG/conversion-measurement-api/commits/main/AGGREGATION_SERVICE_TEE.md.atom"
+            },
+            {
+                "name": "GitHub WICG/Conversion_Measurement_API/attribution_reporting_security_privacy_question",
+                "site-url": "https://github.com/WICG/conversion-measurement-api/blob/main/attribution_reporting_security_privacy_questionnaire.md",
+                "feed-url": "https://github.com/WICG/conversion-measurement-api/commits/main/attribution_reporting_security_privacy_questionnaire.md.atom"
+            },
+            {
+                "name": "GitHub WICG/Conversion_Measurement_API/event",
+                "site-url": "https://github.com/WICG/conversion-measurement-api/blob/main/EVENT.md",
+                "feed-url": "https://github.com/WICG/conversion-measurement-api/commits/main/EVENT.atom"
+            },
+            {
+                "name": "GitHub WICG/Conversion_Measurement_API/app_to_web",
+                "site-url": "https://github.com/WICG/conversion-measurement-api/blob/main/app_to_web.md",
+                "feed-url": "https://github.com/WICG/conversion-measurement-api/commits/main/app_to_web.md.atom"
+            },
+            {
+                "name": "GitHub WICG/Conversion_Measurement_API/cross_device",
+                "site-url": "https://github.com/WICG/conversion-measurement-api/blob/main/cross_device.md",
+                "feed-url": "https://github.com/WICG/conversion-measurement-api/commits/main/cross_device.md.atom"
+            },
+            {
+                "name": "GitHub WICG/FLoC",
+                "site-url": "https://github.com/WICG/floc/blob/main/README.md",
+                "feed-url": "https://github.com/WICG/floc/commits/main/README.md.atom"
+            },
+            {
+                "name": "GitHub WICG/Topics",
+                "site-url": "https://github.com/jkarlin/topics/blob/main/README.md",
+                "feed-url": "https://github.com/jkarlin/topics/commits/main/README.md.atom"
+            },
+            {
+                "name": "GitHub WICG/Topics/kinds",
+                "site-url": "https://github.com/jkarlin/topics/blob/main/taxonomy_v1.md",
+                "feed-url": "https://github.com/jkarlin/topics/commits/main/taxonomy_v1.md.atom"
+            },
+            {
+                "name": "GitHub WICG/FLEDGE",
+                "site-url": "https://github.com/WICG/turtledove/blob/main/FLEDGE.md",
+                "feed-url": "https://github.com/WICG/turtledove/commits/main/FLEDGE.md.atom"
+            },
+            {
+                "name": "GitHub WICG/Trust_Token_API",
+                "site-url": "https://github.com/WICG/trust-token-api/blob/main/README.md",
+                "feed-url": "https://github.com/WICG/trust-token-api/commits/main/README.md.atom"
+            },
+            {
+                "name": "GitHub PCG/First-Party_Sets",
+                "site-url": "https://github.com/privacycg/first-party-sets/blob/main/README.md",
+                "feed-url": "https://github.com/privacycg/first-party-sets/commits/main/README.md.atom"
+            },
+            {
+                "name": "GitHub PCG/First-Party_Sets/signed_assertions",
+                "site-url": "https://github.com/privacycg/first-party-sets/blob/main/signed_assertions.md",
+                "feed-url": "https://github.com/privacycg/first-party-sets/commits/main/signed_assertions.md.atom"
+            },
+            {
+                "name": "GitHub PCG/First-Party_Sets/signed_assertions",
+                "site-url": "https://github.com/privacycg/first-party-sets/blob/main/signed_assertions.md",
+                "feed-url": "https://github.com/privacycg/first-party-sets/commits/main/signed_assertions.md.atom"
+            },
+            {
+                "name": "GitHub PCG/First-Party_Sets/ua_policy_proposal",
+                "site-url": "https://github.com/privacycg/first-party-sets/blob/main/ua_policy_proposal.md",
+                "feed-url": "https://github.com/privacycg/first-party-sets/commits/main/ua_policy_proposal.md.atom"
+            }
+        ]
+    },
+    {
+        "category": "Private Click Measurement/SKAdNetwork/ITP/ATT...etc",
+        "sites": [
+            {
+                "name": "Webkit",
+                "top_url": "https://webkit.org/blog",
+                "feed_url": "https://webkit.org/feed/"
+            },
+            {
+                "name": "Apple Developers (Release)",
+                "top_url": "https://developer.apple.com/news/releases/",
+                "feed_url": "https://developer.apple.com/news/releases/rss/releases.rss"
+            },
+            {
+                "name": "Apple Developers (News)",
+                "top_url": "https://developer.apple.com/jp/news/",
+                "feed_url": "https://developer.apple.com/news/rss/news.rss"
+            }
+        ]
+    },
+    {
+        "category": "Firefox",
+        "sites": [
+            {
+                "name": "Mozilla Hack Blog",
+                "top_url": "https://hacks.mozilla.org/",
+                "feed_url": "https://hacks.mozilla.org/feed/"
+            },
+            {
+                "name": "Mozilla Press Center",
+                "top_url": "https://blog.mozilla.org/press/",
+                "feed_url": "https://blog.mozilla.org/press/feed/"
+            }
+        ]
+    },
+    {
+        "category": "Firefox",
+        "sites": [
+            {
+                "name": "Mozilla Hack Blog",
+                "top_url": "https://hacks.mozilla.org/",
+                "feed_url": "https://hacks.mozilla.org/feed/"
+            },
+            {
+                "name": "Mozilla Press Center",
+                "top_url": "https://blog.mozilla.org/press/",
+                "feed_url": "https://blog.mozilla.org/press/feed/"
+            }
+        ]
+    },
+    {
+        "category": "Android",
+        "sites": [
+            {
+                "name": "Android Developers Blog",
+                "top_url": "https://android-developers.googleblog.com/",
+                "feed_url": "https://android-developers.googleblog.com/feeds/posts/default"
+            }
+        ]
+    },
+    {
+        "category": "その他",
+        "sites": [
+            {
+                "name": "IAB",
+                "top_url": "https://iabtechlab.com/blog/",
+                "feed_url": "https://iabtechlab.com/blog/feed/"
+            }
+        ]
+    }
+]

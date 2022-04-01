@@ -1,1 +1,1 @@
-# news_feed
+# news-feed
