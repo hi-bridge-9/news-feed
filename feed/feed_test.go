@@ -64,7 +64,7 @@ func Test_checkUpdate(t *testing.T) {
 	}
 }
 
-func Test_extractNew(t *testing.T) {
+func Test_extractNewArticle(t *testing.T) {
 	type args struct {
 		f     *gofeed.Feed
 		start *time.Time
@@ -79,11 +79,9 @@ func Test_extractNew(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := extractNew(tt.args.f, tt.args.start, tt.args.end); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("extractNew() = %v, want %v", got, tt.want)
+			if got := extractNewArticle(tt.args.f, tt.args.start, tt.args.end); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("extractNewArticle() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
-
-

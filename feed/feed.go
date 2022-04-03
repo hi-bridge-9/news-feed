@@ -49,10 +49,10 @@ func checkUpdate(site *Site, start, end *time.Time) (*News, error) {
 
 	// 新しい情報のみを抽出
 	// もし新しい情報がなくても、エラーは出さずに初期値を返す
-	return extractNew(feed, start, end), nil
+	return extractNewArticle(feed, start, end), nil
 }
 
-func extractNew(f *gofeed.Feed, start, end *time.Time) *News {
+func extractNewArticle(f *gofeed.Feed, start, end *time.Time) *News {
 	// フィード用ファイルの更新がされていなければ、記事の確認処理を行わない
 	if f.UpdatedParsed.Unix() < start.Unix() && f.UpdatedParsed.Unix() >= end.Unix() {
 		log.Printf("%s: feed file is not updated\n", f.Title)
