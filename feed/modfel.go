@@ -37,3 +37,4 @@ type Article struct {
 // ソート用構造体
 
 type ByPublishedParsed []*gofeed.Item
+

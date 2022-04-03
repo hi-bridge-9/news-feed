@@ -12,7 +12,9 @@ import (
 
 func main() {
 	// 実行時のコマンドライン引数から参照先ファイル名を入力（指定されない場合）
-	path := flag.String("path", ".example_data/feed_list.json", "for read feed target list")
+	path := flag.String("path", "input_data/feed_list.json", "For read target list")
+	flag.Parse()
+
 	bytes, err := ioutil.ReadFile(*path)
 	if err != nil {
 		panic(err)
@@ -26,7 +28,7 @@ func main() {
 
 	// 取得したい範囲の開始時刻、終了時刻を設定
 	now := time.Now()
-	start := time.Date(now.Year(), now.Month(), now.Day()-1, 00, 00, 00, 00, time.UTC)
+	start := time.Date(now.Year(), now.Month(), now.Day()-20, 00, 00, 00, 00, time.UTC)
 	end := time.Date(now.Year(), now.Month(), now.Day(), 00, 00, 00, 00, time.UTC)
 
 	// 情報取得対象の情報、取得対象範囲をもとに、新しい情報を取得
@@ -35,26 +37,41 @@ func main() {
 		panic(err)
 	}
 
-	// 通知用に適した形式で文章を作成
-	msg := makeMessage(newsList)
-
-	fmt.Println(msg)
+	// データ活用例： 新しく投稿された情報をマークダウン形式のログファイルとして出力
+	if err := exportOutpuFile(newsList, &start, &end); err != nil {
+		panic(err)
+	}
 }
 
-func makeMessage(newsList *[]feed.News) string {
-	var msg string
-	if len(*newsList) == 0 {
+
+func exportOutpuFile(newsList *[]feed.News, start, end *time.Time) error {
+	fn := makeFileName(start, end)
+	msg := convertToMessage(newsList)
+	return ioutil.WriteFile(fn, []byte(msg), 0664)
+
+}
+
+func makeFileName(start, end *time.Time) string {
+	dateRange := start.Format("20060102150405")
+	dateRange += "-"
+	dateRange += end.Format("20060102150405")
+	return fmt.Sprintf("log/%s.md", dateRange)
+}
+
+func convertToMessage(newsList *[]feed.News) (msg string) {
+	if newsList == nil {
 		return "今日の更新情報はありません"
 	}
 
-	for _, out := range *newsList {
-		msg += fmt.Sprintf("【%s】\n", out.SiteTitle)
-		for i, article := range out.Articles {
-			msg += fmt.Sprintf("%d. %s\n", i, article.Title)
-			msg += fmt.Sprintf("URL: %s\n", article.Link)
-			msg += "-----------------------------------------\n"
+	msg += fmt.Sprintf("# %s\n", "更新情報")
+	for _, news := range *newsList {
+		msg += fmt.Sprintf("## 【%s】\n", news.SiteTitle)
+		for i, article := range news.Articles {
+			msg += fmt.Sprintf("### %d. %s\n", i+1, article.Title)
+			msg += fmt.Sprintf("   - 時刻: %s\n", article.PublishedParsed)
+			msg += fmt.Sprintf("   - URL : %s\n \n", article.Link)
 		}
 	}
 
-	return msg
+	return
 }

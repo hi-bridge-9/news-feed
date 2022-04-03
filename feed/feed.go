@@ -9,7 +9,7 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
-func GetNewInfo(urls *[]Tartget, start, end *time.Time) (*[]News, error) {
+func GetNewInfo(ts *[]Tartget, start, end *time.Time) (*[]News, error) {
 	// 取得対象の開始時刻が入力にない場合、エラーを返却
 	if start == nil {
 		return nil, errors.New("start of range is not exist")
@@ -21,9 +21,9 @@ func GetNewInfo(urls *[]Tartget, start, end *time.Time) (*[]News, error) {
 		end = &now
 	}
 
-	var newsList *[]News
-	for _, url := range *urls {
-		for _, site := range url.Sites {
+	newsList := &[]News{}
+	for _, t := range *ts {
+		for _, site := range t.Sites {
 			news, err := checkUpdate(&site, start, end)
 			if err != nil {
 				return nil, err
@@ -41,40 +41,53 @@ func checkUpdate(site *Site, start, end *time.Time) (*News, error) {
 	// URL先からフィード用コンテンツを取得
 	feed, err := gofeed.NewParser().ParseURL(site.FeedURL)
 	if err != nil {
+		log.Printf("Name: %s", site.Name)
+		log.Printf("URL : %s",site.FeedURL)
 		return nil, err
 	}
 
 	// 新しい情報のみを抽出
 	// もし新しい情報がなくても、エラーは出さずに初期値を返す
-	return extract(feed, start, end), nil
+	return extractNew(feed, start, end), nil
 }
 
-func extract(f *gofeed.Feed, start, end *time.Time) *News {
+func extractNew(f *gofeed.Feed, start, end *time.Time) *News {
 	// フィード用ファイルの更新がされていなければ、記事の確認処理を行わない
-	if f.UpdatedParsed.Unix() < start.Unix() || f.UpdatedParsed.Unix() < end.Unix() {
-		log.Println("feed file is not updated")
+	if f.UpdatedParsed.Unix() < start.Unix() && f.UpdatedParsed.Unix() >= end.Unix() {
+		log.Printf("%s: feed file is not updated\n", f.Title)
+		log.Printf("update date -> %s\n", f.UpdatedParsed)
 		return nil
 	}
 
-	// 記事の投稿日の新しい順にソート
-	var items ByPublishedParsed = f.Items
-	sort.Sort(items)
+	// 投稿日が新しい順に記事をソート
+	var articles ByPublishedParsed = f.Items
+	sort.Sort(articles)
 
 	// 投稿日が取得対象の範囲内なら抽出
-	var news *News
-	for _, article := range f.Items {
+	news := &News{}
+	for _, article := range articles {
+		// 投稿日時と更新日時の両方が存在しない場合はスキップ
+		// 更新日時のみが存在する場合、更新日時を投稿日時として扱う
+		if article.UpdatedParsed == nil && article.PublishedParsed == nil {
+			log.Printf("%s: not exist published date and updated date\n", f.Title)
+			return nil
+		} else if article.PublishedParsed == nil {
+			article.PublishedParsed = article.UpdatedParsed
+		}
+
+		// 記事の投稿時刻が取得対象範囲内であれば抽出
 		if article.PublishedParsed.Unix() >= start.Unix() {
 			if article.PublishedParsed.Unix() < end.Unix() {
 				news.Articles = append(news.Articles, *article)
 			}
 		} else {
-			// 取得開始時刻よりも記事が古い場合、抽出処理を終了
+			// 取得範囲の開始時刻よりも古い記事が出てきたら、抽出処理を終了
 			break
 		}
 	}
 
 	if len(news.Articles) == 0 {
-		log.Println("article is not updated")
+		log.Printf("%s: article is not updated\n", f.Title)
 		return nil
 	}
 
