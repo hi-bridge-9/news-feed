@@ -3,7 +3,6 @@ package feed
 import (
 	"errors"
 	"log"
-	"runtime"
 	"sort"
 	"time"
 

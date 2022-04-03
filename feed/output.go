@@ -4,18 +4,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"time"
-
 )
 
-func ExportFile(newsList *[]News, start, end *time.Time) error {
-	fn := makeFileName(start, end)
-	dir := "data/output/"
+func ExportFile(newsList *[]News, fp string) error {
 	msg := convertToMessage(newsList)
-	return ioutil.WriteFile(dir+fn, []byte(msg), 0664)
+	return ioutil.WriteFile(fp, []byte(msg), 0664)
 
 }
 
-func makeFileName(start, end *time.Time) string {
+func MakeFileName(start, end *time.Time) string {
 	dateRange := start.Format("20060102150405")
 	dateRange += "-"
 	dateRange += end.Format("20060102150405")
