@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	// 実行時のコマンドライン引数から参照先ファイル名を入力（指定されない場合）
+	// 実行時のコマンドライン引数から参照先ファイル名を入力
 	path := flag.String("path", "data/input/feed_list.json", "For read target list")
 	flag.Parse()
 
