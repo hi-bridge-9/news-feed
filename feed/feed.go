@@ -15,9 +15,10 @@ func GetNewInfo(ts *[]Tartget, start, end *time.Time) (*[]News, error) {
 		return nil, errors.New("start of range is not exist")
 	}
 
-	// 終了時刻が入力にない場合、現在時刻を終了時刻とみなす
+	// 終了時刻が入力にない場合、実行日のAM0:00(UTC)を終了時刻とみなす
 	if end == nil {
-		now := time.Now().UTC()
+		now := time.Now()
+		time.Date(now.Year(), now.Month(), now.Day(), 00, 00, 00, 00, time.UTC)
 		end = &now
 	}
 
