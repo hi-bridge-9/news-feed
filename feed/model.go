@@ -6,7 +6,8 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
-// 入力用
+
+// 入力
 
 type Tartget struct {
 	Category string `json:"category"`
@@ -19,7 +20,7 @@ type Site struct {
 	FeedURL string `json:"feed_url"`
 }
 
-// 出力用
+// 出力
 
 type News struct {
 	SiteTitle string
@@ -34,7 +35,8 @@ type Article struct {
 	PublishedParsed *time.Time
 }
 
-// ソート用構造体
+
+// ソート用
 
 type ByPublishedParsed []*gofeed.Item
 

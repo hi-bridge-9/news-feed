@@ -3,6 +3,7 @@ package feed
 import (
 	"errors"
 	"log"
+	"runtime"
 	"sort"
 	"time"
 
@@ -43,7 +44,7 @@ func checkUpdate(site *Site, start, end *time.Time) (*News, error) {
 	feed, err := gofeed.NewParser().ParseURL(site.FeedURL)
 	if err != nil {
 		log.Printf("Name: %s", site.Name)
-		log.Printf("URL : %s",site.FeedURL)
+		log.Printf("URL : %s", site.FeedURL)
 		return nil, err
 	}
 
