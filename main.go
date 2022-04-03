@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"io/ioutil"
+	"log"
 	"time"
 
 	"github.com/hi-bridge-9/news-feed/feed"
@@ -16,13 +17,13 @@ func main() {
 
 	bytes, err := ioutil.ReadFile(*path)
 	if err != nil {
-		panic(err)
+		log.Fatal("error in read file: %w", err)
 	}
 
 	// ファイルの内容を読み取り、構造体にマッピング
 	var targetList []feed.Tartget
 	if err := json.Unmarshal(bytes, &targetList); err != nil {
-		panic(err)
+		log.Fatal("error in unmarshal json: %w", err)
 	}
 
 	// 取得したい範囲の開始時刻、終了時刻を設定
@@ -33,13 +34,13 @@ func main() {
 	// 情報取得対象の情報、取得対象範囲をもとに、新しい情報を取得
 	newsList, err := feed.GetNewInfo(&targetList, &start, &end)
 	if err != nil {
-		panic(err)
+		log.Fatal("error in get new information: %w", err)
 	}
 
 	// データ活用例： 新しく投稿された情報をマークダウン形式のログファイルとして出力
 	dir := "data/output/"
 	fn := feed.MakeFileName(&start, &end)
 	if err := feed.ExportFile(newsList, dir+fn); err != nil {
-		panic(err)
+		log.Fatal("error in export file: %w", err)
 	}
 }

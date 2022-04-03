@@ -29,8 +29,8 @@ func convertToMessage(newsList *[]News) (msg string) {
 		msg += fmt.Sprintf("## **%s**\n", news.SiteTitle)
 		for i, article := range news.Articles {
 			msg += fmt.Sprintf("### %d. %s\n", i+1, article.Title)
-			msg += fmt.Sprintf("   - 時刻: %s\n", article.PublishedParsed)
-			msg += fmt.Sprintf("   - URL : %s\n \n", article.Link)
+			msg += fmt.Sprintf("- 時刻: %s\n", article.PublishedParsed)
+			msg += fmt.Sprintf("- URL : %s\n \n", article.Link)
 		}
 	}
 
