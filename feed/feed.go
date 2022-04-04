@@ -54,7 +54,7 @@ func checkUpdate(site *Site, start, end *time.Time) (*News, error) {
 
 func extractNewArticle(f *gofeed.Feed, start, end *time.Time) *News {
 	// フィード用ファイルの更新がされていなければ、記事の確認処理を行わない
-	if f.UpdatedParsed.Unix() < start.Unix() && f.UpdatedParsed.Unix() >= end.Unix() {
+	if f.UpdatedParsed.Unix() < start.Unix() || f.UpdatedParsed.Unix() >= end.Unix() {
 		log.Printf("%s: feed file is not updated\n", f.Title)
 		log.Printf("update date -> %s\n", f.UpdatedParsed)
 		return nil
