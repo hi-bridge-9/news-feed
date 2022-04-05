@@ -85,6 +85,32 @@ func TestGetNewInfo(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "正常系(フィード用URLが不正)",
+			args: args{
+				ts: &[]Tartget{
+					{
+						Sites: []Site{
+							{
+								Name:    "site 1",
+								TopURL:  "https://developers-jp.googleblog.com/",
+								FeedURL: "https://developers-jp.googleblog.com/atom.xm",
+							},
+						},
+					},
+				},
+				start: &start,
+				end:   &end,
+			},
+			want: &[]News{
+				{
+					SiteTitle:  "site 1",
+					SiteURL:    "https://developers-jp.googleblog.com/atom.xm",
+					errMessage: "http error: 404 Not Found",
+				},
+			},
+			wantErr: false,
+		},
+		{
 			name: "異常系(開始時刻なし)",
 			args: args{
 				ts: &[]Tartget{
@@ -99,26 +125,6 @@ func TestGetNewInfo(t *testing.T) {
 					},
 				},
 				end: &end,
-			},
-			want:    nil,
-			wantErr: true,
-		},
-		{
-			name: "異常系(フィード用URLが不正)",
-			args: args{
-				ts: &[]Tartget{
-					{
-						Sites: []Site{
-							{
-								Name:    "site 1",
-								TopURL:  "https://developers-jp.googleblog.com/",
-								FeedURL: "https://",
-							},
-						},
-					},
-				},
-				start: &start,
-				end:   &end,
 			},
 			want:    nil,
 			wantErr: true,
@@ -150,10 +156,9 @@ func Test_checkUpdate(t *testing.T) {
 	end := time.Date(2999, 01, 02, 00, 00, 00, 00, time.UTC)
 
 	tests := []struct {
-		name    string
-		args    args
-		want    *News
-		wantErr bool
+		name string
+		args args
+		want *News
 	}{
 		// TODO: Add test cases.
 		{
@@ -167,31 +172,29 @@ func Test_checkUpdate(t *testing.T) {
 				start: &start,
 				end:   &end,
 			},
-			want:    nil,
-			wantErr: false,
+			want: nil,
 		},
 		{
-			name: "異常系(フィード用URLが不正)",
+			name: "正常系(フィード用URLが不正)",
 			args: args{
 				site: &Site{
 					Name:    "site 1",
 					TopURL:  "https://developers-jp.googleblog.com/",
-					FeedURL: "https://",
+					FeedURL: "https://developers-jp.googleblog.com/atom.xm",
 				},
 				start: &start,
 				end:   &end,
 			},
-			want:    nil,
-			wantErr: true,
+			want: &News{
+				SiteTitle:  "site 1",
+				SiteURL:    "https://developers-jp.googleblog.com/atom.xm",
+				errMessage: "http error: 404 Not Found",
+			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := checkUpdate(tt.args.site, tt.args.start, tt.args.end)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("getErr %v\n wantErr %v", err, tt.wantErr)
-				return
-			}
+			got := checkUpdate(tt.args.site, tt.args.start, tt.args.end)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("get %v\n want %v", got, tt.want)
 			}
@@ -429,7 +432,7 @@ func TestByPublishedParsed_Swap(t *testing.T) {
 			},
 			args: args{
 				i: 0,
-				j: 0,
+				j: 1,
 			},
 		},
 	}

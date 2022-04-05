@@ -39,7 +39,11 @@ func main() {
 
 	// データ活用例： 新しく投稿された情報をマークダウン形式のログファイルとして出力
 	dir := "data/output/"
-	fn := feed.MakeFileName(&start, &end)
+	fn, err := feed.MakeFileName(&start, &end)
+	if err != nil {
+		log.Fatal("error in make file name: %w", err)
+	}
+
 	if err := feed.ExportFile(newsList, dir+fn); err != nil {
 		log.Fatal("error in export file: %w", err)
 	}

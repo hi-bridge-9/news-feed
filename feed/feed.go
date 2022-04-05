@@ -25,10 +25,7 @@ func GetNewInfo(ts *[]Tartget, start, end *time.Time) (*[]News, error) {
 	newsList := &[]News{}
 	for _, t := range *ts {
 		for _, site := range t.Sites {
-			news, err := checkUpdate(&site, start, end)
-			if err != nil {
-				return nil, err
-			}
+			news := checkUpdate(&site, start, end)
 			if news != nil {
 				*newsList = append(*newsList, *news)
 			}
@@ -38,25 +35,28 @@ func GetNewInfo(ts *[]Tartget, start, end *time.Time) (*[]News, error) {
 	return newsList, nil
 }
 
-func checkUpdate(site *Site, start, end *time.Time) (*News, error) {
+func checkUpdate(site *Site, start, end *time.Time) *News {
 	// URL先からフィード用コンテンツを取得
 	feed, err := gofeed.NewParser().ParseURL(site.FeedURL)
 	if err != nil {
-		log.Printf("Name: %s", site.Name)
-		log.Printf("URL : %s", site.FeedURL)
-		return nil, err
+		news := &News{
+			SiteTitle:  site.Name,
+			SiteURL:    site.FeedURL,
+			errMessage: err.Error(),
+		}
+		return news
 	}
 
 	// 新しい情報のみを抽出
 	// もし新しい情報がなくても、エラーは出さずに初期値を返す
-	return extractNewArticle(feed, start, end), nil
+	return extractNewArticle(feed, start, end)
 }
 
 func extractNewArticle(f *gofeed.Feed, start, end *time.Time) *News {
 	// フィード用ファイルの更新がされていなければ、記事の確認処理を行わない
-	if f.UpdatedParsed.Unix() < start.Unix() || f.UpdatedParsed.Unix() >= end.Unix() {
-		log.Printf("%s: feed file is not updated\n", f.Title)
-		log.Printf("update date -> %s\n", f.UpdatedParsed)
+	if f.UpdatedParsed.Unix() < start.Unix() {
+		log.Printf("＊%s: feed file is not updated\n", f.Title)
+		log.Printf("  last updated date -> %s\n", f.UpdatedParsed)
 		return nil
 	}
 
