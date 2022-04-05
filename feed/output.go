@@ -16,9 +16,9 @@ func MakeFileName(start, end *time.Time) (string, error) {
 	if start == nil || end == nil {
 		return "", errors.New("start or end date is not exits\nstart: %v\nend: %v")
 	}
-	dateRange := start.Format("20060102")
-	dateRange += "-"
-	dateRange += end.Format("20060102")
+	dateRange := start.Format("2006-01-02")
+	dateRange += "_"
+	dateRange += end.Format("2006-01-02")
 	return fmt.Sprintf("%s.md", dateRange), nil
 }
 
