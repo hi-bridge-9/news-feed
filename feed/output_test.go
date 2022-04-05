@@ -67,7 +67,7 @@ func TestMakeFileName(t *testing.T) {
 				start: &start,
 				end:   &end,
 			},
-			want:    "29990101-29990102.md",
+			want:    "2999-01-01_2999-01-02.md",
 			wantErr: false,
 		},
 		{
