@@ -28,7 +28,7 @@ func main() {
 
 	// 取得したい範囲の開始時刻、終了時刻を設定
 	now := time.Now()
-	start := time.Date(now.Year(), now.Month(), now.Day()-20, 00, 00, 00, 00, time.UTC)
+	start := time.Date(now.Year(), now.Month(), now.Day()-25, 00, 00, 00, 00, time.UTC)
 	end := time.Date(now.Year(), now.Month(), now.Day(), 00, 00, 00, 00, time.UTC)
 
 	// 情報取得対象の情報、取得対象範囲をもとに、新しい情報を取得
