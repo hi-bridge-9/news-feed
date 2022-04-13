@@ -30,8 +30,8 @@ func convertToMessage(newsList *[]News) (msg string) {
 	msg += fmt.Sprintln("# 更新情報")
 	for _, news := range *newsList {
 		msg += fmt.Sprintf("## **%s**\n", news.SiteTitle)
-		if news.errMessage != "" {
-			msg += fmt.Sprintf("- **Error: %s**\n", news.errMessage)
+		if news.ErrMessage != "" {
+			msg += fmt.Sprintf("- **Error: %s**\n", news.ErrMessage)
 			msg += fmt.Sprintf("- URL  : %v\n \n", news.SiteURL)
 		} else {
 			for i, article := range news.Articles {

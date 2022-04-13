@@ -26,7 +26,7 @@ type News struct {
 	SiteTitle string
 	SiteURL   string
 	Articles  []gofeed.Item
-	errMessage string
+	ErrMessage string
 }
 
 type Article struct {

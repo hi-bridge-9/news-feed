@@ -148,7 +148,7 @@ func Test_convertToMessage(t *testing.T) {
 					{
 						SiteTitle:  "site 1",
 						SiteURL:    "https://test.com/articles/test.xml",
-						errMessage: "http error: 404 Not Found",
+						ErrMessage: "http error: 404 Not Found",
 					},
 				},
 			},

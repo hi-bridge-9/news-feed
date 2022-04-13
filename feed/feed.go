@@ -42,7 +42,7 @@ func checkUpdate(site *Site, start, end *time.Time) *News {
 		news := &News{
 			SiteTitle:  site.Name,
 			SiteURL:    site.FeedURL,
-			errMessage: err.Error(),
+			ErrMessage: err.Error(),
 		}
 		return news
 	}

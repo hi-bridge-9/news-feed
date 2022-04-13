@@ -105,7 +105,7 @@ func TestGetNewInfo(t *testing.T) {
 				{
 					SiteTitle:  "site 1",
 					SiteURL:    "https://developers-jp.googleblog.com/atom.xm",
-					errMessage: "http error: 404 Not Found",
+					ErrMessage: "http error: 404 Not Found",
 				},
 			},
 			wantErr: false,
@@ -188,7 +188,7 @@ func Test_checkUpdate(t *testing.T) {
 			want: &News{
 				SiteTitle:  "site 1",
 				SiteURL:    "https://developers-jp.googleblog.com/atom.xm",
-				errMessage: "http error: 404 Not Found",
+				ErrMessage: "http error: 404 Not Found",
 			},
 		},
 	}
